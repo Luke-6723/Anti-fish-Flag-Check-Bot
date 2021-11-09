@@ -1,0 +1,12 @@
+{
+  "name": "anti-fish-flag-check-bot",
+  "version": "1.0.0",
+  "description": "A bot to check whether a domain has already been flagged in the `#flags` channel in the anti-fish api channel",
+  "main": "index.js",
+  "author": "Luke-6723",
+  "license": "ISC",
+  "dependencies": {
+    "eris": "^0.15.1",
+    "node-fetch": "^2.6.5"
+  }
+}
