@@ -25,8 +25,8 @@ bot.on('messageCreate', async (msg) => {
       result = await result.json()
       if (result.match) {
         let description = 'Flagged on current sources:\n```\n'
-		    const table = new AsciiTable()
-			    .setHeading('source', 'type', 'trust rating')
+        const table = new AsciiTable()
+          .setHeading('source', 'type', 'trust rating')
 
         result.matches.forEach(m => {
           table.addRow(m.source, m.type, m.trust_rating)
