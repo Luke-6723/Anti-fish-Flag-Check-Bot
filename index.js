@@ -1,5 +1,6 @@
 const Eris = require('eris')
 const fetch = require('node-fetch')
+const AsciiTable = require('ascii-table')
 const { token, channelID, guildID } = require('./config.json')
 const bot = new Eris(token)
 
@@ -23,11 +24,14 @@ bot.on('messageCreate', async (msg) => {
       }).catch(err => console.log(err))
       result = await result.json()
       if (result.match) {
-        let description = 'Flagged on current sources:\n```\n[source | type | trust rating]\n'
+        let description = 'Flagged on current sources:\n```\n'
+		    var table = new AsciiTable()
+			    .setHeading('source', 'type', 'trust rating')
+        
         result.matches.forEach(m => {
-          description += `${m.source} | ${m.type} | ${m.trust_rating}`
+          table.addRow(m.source, m.type, m.trust_rating)
         })
-        description += '```'
+        description += table.toString() + '```'
 
         msg.channel.createMessage({
           embed: {
