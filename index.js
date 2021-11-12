@@ -27,10 +27,10 @@ bot.on('messageCreate', async (msg) => {
       if (result.match) {
         let description = 'Flagged on current sources:\n```\n'
         const table = new AsciiTable()
-          .setHeading('source', 'type', 'trust rating')
+          .setHeading('domain', 'source', 'type', 'trust rating')
 
         result.matches.forEach(m => {
-          table.addRow(m.source, m.type, m.trust_rating)
+          table.addRow(m.domain, m.source, m.type, m.trust_rating)
         })
         description += table.toString() + '```'
 
