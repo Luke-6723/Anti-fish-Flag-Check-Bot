@@ -35,10 +35,7 @@ bot.on('messageCreate', async (msg) => {
         description += table.toString() + '```'
 
         msg.channel.createMessage({
-          embed: {
-            title: 'Domain is already flagged!',
-            description: description
-          }
+          content: `**Domain is already flagged!**\n${description}`
         })
       } else {
         const contentMatch = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
