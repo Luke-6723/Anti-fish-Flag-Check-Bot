@@ -9,6 +9,7 @@ bot.on('ready', () => {
 })
 
 bot.on('messageCreate', async (msg) => {
+  if (msg.author.bot) return
   if (msg?.channel?.guild?.id === guildID) {
     if (msg.channel.id === channelID) {
       const data = JSON.stringify({
@@ -39,6 +40,17 @@ bot.on('messageCreate', async (msg) => {
             description: description
           }
         })
+      } else {
+        const contentMatch = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
+        if (contentMatch.length > 0) {
+          msg.channel.createMessage({
+            message_reference: {
+              message_id: msg.id,
+              channel_id: msg.channel.id
+            },
+            content: `Parsed unmatched domains:\n\`\`\`\n${contentMatch.join('\n')}\`\`\``
+          })
+        }
       }
     }
   }
