@@ -6,8 +6,8 @@
   "author": "Luke-6723",
   "license": "ISC",
   "dependencies": {
+    "ascii-table": "^0.0.9",
     "eris": "^0.15.1",
-    "node-fetch": "^2.6.5",
-    "ascii-table": "^0.0.9"
+    "node-fetch": "^2.6.5"
   }
 }
