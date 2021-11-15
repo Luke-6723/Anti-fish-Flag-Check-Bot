@@ -10,6 +10,7 @@ bot.on('ready', () => {
 
 bot.on('messageCreate', async (msg) => {
   if (msg.author.bot) return
+  const contentMatch = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
   if (msg?.channel?.guild?.id === guildID) {
     if (msg.channel.id === channelID) {
       const data = JSON.stringify({
@@ -32,13 +33,24 @@ bot.on('messageCreate', async (msg) => {
         result.matches.forEach(m => {
           table.addRow(m.domain, m.source, m.type, m.trust_rating)
         })
-        description += table.toString() + '```'
+        description += table.toString() + '\n\nUnmatched domains (if any):'
+
+        let unmatchedDomains = 0
+        const domains = result.matches.map(m => m.domain)
+        contentMatch.forEach(d => {
+          if (!domains.includes(d)) {
+            unmatchedDomains++
+            description += `\n${d}`
+          }
+        })
+
+        if (unmatchedDomains === 0) description += '\nNo unmatched domains```'
+        else description += '```'
 
         msg.channel.createMessage({
           content: `**Domain is already flagged!**\n${description}`
         })
       } else {
-        const contentMatch = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
         if (contentMatch.length > 0) {
           msg.channel.createMessage({
             message_reference: {
