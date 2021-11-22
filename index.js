@@ -36,6 +36,7 @@ async function followDomain (url) {
 bot.on('messageCreate', async (msg) => {
   if (msg.author.bot) return
   const urls = []
+  const origContent = msg.content
   const contentMatch = msg.content.match(/((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm)
   for (let i = 0; i < contentMatch.length; i++) {
     console.log(contentMatch.length, i)
@@ -43,7 +44,7 @@ bot.on('messageCreate', async (msg) => {
     console.log(urlOut)
     urls.push(urlOut)
     if ((i + 1) === contentMatch.length) {
-      msg.content = urls.map(u => u.match(/((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm))
+      msg.content = origContent.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
       if (msg?.channel?.guild?.id === guildID) {
         if (msg.channel.id === channelID) {
           const data = JSON.stringify({
@@ -69,9 +70,8 @@ bot.on('messageCreate', async (msg) => {
             description += table.toString() + '\n\nUnmatched domains (if any):'
 
             let unmatchedDomains = 0
-            const domainOnlyMatch = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
             const domains = result.matches.map(m => m.domain)
-            domainOnlyMatch.forEach(d => {
+            msg.content.forEach(d => {
               if (!domains.includes(d)) {
                 unmatchedDomains++
                 description += `\n${d}`
