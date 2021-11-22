@@ -69,8 +69,9 @@ bot.on('messageCreate', async (msg) => {
             description += table.toString() + '\n\nUnmatched domains (if any):'
 
             let unmatchedDomains = 0
+            const domainOnlyMatch = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
             const domains = result.matches.map(m => m.domain)
-            contentMatch.forEach(d => {
+            domainOnlyMatch.forEach(d => {
               if (!domains.includes(d)) {
                 unmatchedDomains++
                 description += `\n${d}`
