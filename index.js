@@ -96,7 +96,7 @@ bot.on('messageCreate', async (msg) => {
                   message_id: msg.id,
                   channel_id: msg.channel.id
                 },
-                content: `Parsed unmatched domains:\n\`\`\`\n${urls.join('\n')}\`\`\``
+                content: `Parsed unmatched domains:\n\`\`\`\n${urls.map(url => (url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm))?.[0]).join('\n')}\`\`\``
               })
             }
           }
