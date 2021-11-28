@@ -31,7 +31,7 @@ async function followDomain (url) {
     url = domainLoc.match(/([Ll]ocation:).*/gm)[0].split(' ')[1].match(/(?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9]/gm)
     return url[0]
   }
-  return url.substr(0, url.length - 1)
+  return url.substr(0, url.length)
 }
 
 bot.on('messageCreate', async (msg) => {
