@@ -38,7 +38,7 @@ bot.on('messageCreate', async (msg) => {
   if (msg.author.bot) return
   const urls = []
   const origContent = msg.content
-  const contentMatch = msg.content.match(/((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm) || msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
+  const contentMatch = msg.content.match(/(https?:\/\/)?((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm) || msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
   for (let i = 0; i < contentMatch.length; i++) {
     console.log(contentMatch.length, i)
     const urlOut = await followDomain(contentMatch[i])
