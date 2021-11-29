@@ -27,8 +27,7 @@ function isMoved (output) {
 async function followDomain (url) {
   const domainLoc = await _followDomain(url)
   if (isMoved(domainLoc)) {
-    console.log(domainLoc.match(/(Location:).*/gm))
-    url = domainLoc.match(/([Ll]ocation:).*/gm)[0].split(' ')[1].match(/(?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9]/gm)
+    url = domainLoc.match(/([Ll]ocation:).*/gm)[0].split(' ')[1].match(/(https?:\/\/)?((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm)
     return url[0]
   }
   return url.substr(0, url.length)
@@ -40,9 +39,8 @@ bot.on('messageCreate', async (msg) => {
   const origContent = msg.content
   const contentMatch = msg.content.match(/(https?:\/\/)?((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm) || msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
   for (let i = 0; i < contentMatch.length; i++) {
-    console.log(contentMatch.length, i)
     const urlOut = await followDomain(contentMatch[i])
-    console.log(urlOut)
+    console.log(`Followed to: ${urlOut}`)
     urls.push(urlOut)
     if ((i + 1) === contentMatch.length) {
       msg.content = origContent.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
@@ -96,7 +94,7 @@ bot.on('messageCreate', async (msg) => {
                   message_id: msg.id,
                   channel_id: msg.channel.id
                 },
-                content: `Parsed unmatched domains:\n\`\`\`\n${urls.map(url => (url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm))?.[0]).join('\n')}\`\`\``
+                content: `Parsed unmatched domains:\n\`\`\`\n${urls.map(url => (url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm))?.[0]).join('\n')}\n\nDomains followed to:\n${urls.join('\n')} \`\`\``
               })
             }
           }
