@@ -42,7 +42,6 @@ bot.on('messageCreate', async (msg) => {
     const urlOut = await followDomain(contentMatch[i])
     console.log(`Followed to: ${urlOut}`)
     if ((i + 1) === contentMatch.length) {
-      msg.content = 
       if (msg?.channel?.guild?.id === guildID) {
         if (msg.channel.id === channelID) {
           const data = JSON.stringify({
