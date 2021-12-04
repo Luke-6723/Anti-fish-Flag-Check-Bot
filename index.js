@@ -36,18 +36,16 @@ async function followDomain (url) {
 bot.on('messageCreate', async (msg) => {
   if (msg.author.bot) return
   const urls = []
-  const origContent = msg.content
   const contentMatch = msg.content.match(/(https?:\/\/)?((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm) || msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
   for (let i = 0; i < contentMatch.length; i++) {
     const urlOut = await followDomain(contentMatch[i])
     console.log(`Followed to: ${urlOut}`)
     urls.push(urlOut)
     if ((i + 1) === contentMatch.length) {
-      msg.content = origContent.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
       if (msg?.channel?.guild?.id === guildID) {
         if (msg.channel.id === channelID) {
           const data = JSON.stringify({
-            message: msg.content.join(' ')
+            message: msg.content
           })
           let result = await fetch('https://anti-fish.bitflow.dev/check', {
             method: 'POST',
