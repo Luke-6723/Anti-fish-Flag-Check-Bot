@@ -45,7 +45,7 @@ bot.on('messageCreate', async (msg) => {
       if (msg?.channel?.guild?.id === guildID) {
         if (msg.channel.id === channelID) {
           const data = JSON.stringify({
-            message: msg.content.join(' ')
+            message: msg.content
           })
           let result = await fetch('https://anti-fish.bitflow.dev/check', {
             method: 'POST',
