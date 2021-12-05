@@ -35,9 +35,9 @@ async function followDomain (url) {
 
 bot.on('messageCreate', async (msg) => {
   if (msg.author.bot) return
-  const urls = []
   const origContent = msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
-  const contentMatch = msg.content.match(/(https?:\/\/)?((?:[aA-zZ0-9](?:[aA-zZ0-9-]{0,61}[aA-zZ0-9])?\.)+[aA-zZ0-9][aA-zZ0-9-]{0,61}[aA-zZ0-9])(\/?)(.*)/gm) || msg.content.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm)
+  const contentMatch = msg.content.match(/((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gm)
+  if (contentMatch < 1) return
   for (let i = 0; i < contentMatch.length; i++) {
     const urlOut = await followDomain(contentMatch[i])
     console.log(`Followed to: ${urlOut}`)
@@ -69,6 +69,7 @@ bot.on('messageCreate', async (msg) => {
             let unmatchedDomains = 0
             const domains = result.matches.map(m => m.domain)
             origContent.forEach(d => {
+              console.log(d)
               if (!domains.includes(d)) {
                 unmatchedDomains++
                 description += `\n${d}`
@@ -92,7 +93,7 @@ bot.on('messageCreate', async (msg) => {
                   message_id: msg.id,
                   channel_id: msg.channel.id
                 },
-                content: `Parsed unmatched domains:\n\`\`\`\n${urls.map(url => (url.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gm))?.[0]).join('\n')}\n\nDomains followed to:\n${urls.join('\n')} \`\`\``
+                content: `Parsed unmatched domains:\n\`\`\`\n${contentMatch.join('\n')}\n\nDomains followed to:\n${urlOut} \`\`\``
               })
             }
           }
