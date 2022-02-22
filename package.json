@@ -6,8 +6,11 @@
   "author": "Luke-6723",
   "license": "ISC",
   "dependencies": {
+    "@octokit/core": "^3.5.1",
     "ascii-table": "^0.0.9",
     "eris": "^0.15.1",
-    "node-fetch": "^2.6.5"
+    "nanoid": "^3.3.1",
+    "node-fetch": "^2.6.5",
+    "psl": "^1.8.0"
   }
 }
